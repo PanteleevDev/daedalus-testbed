@@ -31,3 +31,23 @@ def test_total_value() -> None:
 def test_non_positive_quantity_rejected(quantity: int) -> None:
     with pytest.raises(ValueError):
         Stock().add(PEN, quantity)
+
+
+def test_remove_last_unit_forgets_sku() -> None:
+    stock = Stock()
+    stock.add(PEN, 2)
+    stock.add(BOOK, 1)
+    stock.remove("pen", 2)
+    assert stock.quantity("pen") == 0
+    assert "pen" not in stock._quantities
+    assert "pen" not in stock._items
+    assert stock.total_value_cents() == 1200
+
+
+def test_remove_partial_keeps_sku() -> None:
+    stock = Stock()
+    stock.add(PEN, 3)
+    stock.remove("pen", 1)
+    assert stock.quantity("pen") == 2
+    assert "pen" in stock._quantities
+    assert "pen" in stock._items
