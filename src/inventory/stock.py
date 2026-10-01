@@ -27,7 +27,12 @@ class Stock:
         available = self._quantities.get(sku, 0)
         if quantity > available:
             raise ValueError(f"not enough {sku}: {available} available")
-        self._quantities[sku] = available - quantity
+        remaining = available - quantity
+        if remaining == 0:
+            self._quantities.pop(sku, None)
+            self._items.pop(sku, None)
+        else:
+            self._quantities[sku] = remaining
 
     def quantity(self, sku: str) -> int:
         return self._quantities.get(sku, 0)
