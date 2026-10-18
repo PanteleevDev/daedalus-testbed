@@ -31,3 +31,9 @@ def test_total_value() -> None:
 def test_non_positive_quantity_rejected(quantity: int) -> None:
     with pytest.raises(ValueError):
         Stock().add(PEN, quantity)
+
+
+def test_total_value_with_tax() -> None:
+    stock = Stock()
+    stock.add(BOOK, 1)
+    assert stock.total_value_cents() == 1440  # 20% tax included
