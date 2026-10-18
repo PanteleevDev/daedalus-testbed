@@ -32,5 +32,9 @@ class Stock:
     def quantity(self, sku: str) -> int:
         return self._quantities.get(sku, 0)
 
+    def restock_needed(self, threshold: int) -> list[str]:
+        """SKUs whose quantity is at or below threshold, sorted."""
+        return sorted(sku for sku, q in self._quantities.items() if q < threshold)
+
     def total_value_cents(self) -> int:
         return sum(self._items[sku].unit_price_cents * q for sku, q in self._quantities.items())

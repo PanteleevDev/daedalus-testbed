@@ -31,3 +31,10 @@ def test_total_value() -> None:
 def test_non_positive_quantity_rejected(quantity: int) -> None:
     with pytest.raises(ValueError):
         Stock().add(PEN, quantity)
+
+
+def test_restock_needed_lists_skus_below_threshold() -> None:
+    stock = Stock()
+    stock.add(PEN, 1)
+    stock.add(BOOK, 10)
+    assert stock.restock_needed(5) == ["pen"]
